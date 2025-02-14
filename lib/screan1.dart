@@ -65,11 +65,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           isBottomSheetOpen = false;
                           childSize = 0.6; // Reset to initial height
                         });
-                        Future.delayed(const Duration(seconds: 2), () {
+                        Future.delayed(const Duration(seconds: 1), () {
                           if (mounted) {
                             Navigator.pop(context);
                           }
                         });
+                        // Navigator.pop(context);
                       },
                     );
                   },
