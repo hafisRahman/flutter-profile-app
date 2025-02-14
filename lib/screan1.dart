@@ -39,13 +39,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
             builder: (context, setState) {
               return GestureDetector(
                 onTap: () {
-                  setState(() => childSize = 1.0); // Expand to full screen
+                  setState(() => childSize = 0.95); // Expand to full screen
                 },
                 child: DraggableScrollableSheet(
                   initialChildSize: childSize,
-                  minChildSize: 0.5,
-                  maxChildSize: 1.0,
-                  expand: true,
+                  minChildSize: 0.2,
+                  maxChildSize: 0.95,
+                  snapSizes: [0.6, 0.7],
+                  snap: true,
                   builder: (context, scrollController) {
                     return AboutYouModal(
                       onClose: () {
@@ -64,8 +65,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           isBottomSheetOpen = false;
                           childSize = 0.6; // Reset to initial height
                         });
-                        //     Delay closing the modal to allow the animation to complete
-                        Future.delayed(Duration(seconds: 2), () {
+                        Future.delayed(const Duration(seconds: 2), () {
                           if (mounted) {
                             Navigator.pop(context);
                           }
@@ -78,7 +78,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
             },
           );
         },
-      );
+      ).whenComplete(() {
+        // Reset flag when bottom sheet is dismissed
+        if (mounted) {
+          setState(() {
+            isBottomSheetOpen = false;
+          });
+        }
+      });
     }
   }
 
@@ -197,6 +204,7 @@ class _AboutYouModalState extends State<AboutYouModal> {
   @override
   Widget build(BuildContext context) {
     return Container(
+      alignment: Alignment.center,
       height: MediaQuery.of(context).size.height * 0.6,
       decoration: const BoxDecoration(
         color: Colors.black,
